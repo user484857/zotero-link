@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zotero-Link öffnen</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 3rem auto; padding: 0 1rem; line-height: 1.5; }
+  a.button { display: inline-block; padding: .5rem 1rem; border: 1px solid #888; border-radius: .4rem; text-decoration: none; }
+  small { color: #666; }
+</style>
+</head>
+<body>
+<h1>Zotero-Link öffnen</h1>
+<p id="msg">In der Adresse steht kein gültiger Zotero-Link.</p>
+<p><a id="go" class="button" href="#" hidden>In Zotero öffnen</a></p>
+<p><small>Diese Seite leitet Links aus PDFs an die Zotero-App weiter. PDF-Reader auf pdf.js-Basis, darunter Zotero und Firefox, machen zotero://-Links nicht anklickbar, https-Links dagegen schon. Der Zotero-Link steht nur im Fragment hinter „#“ und wird nicht an den Server übertragen. Weitergeleitet wird ausschließlich auf zotero://open-pdf und zotero://select.</small></p>
+<script>
+(function () {
+  var raw = location.hash.slice(1);
+  try { raw = decodeURIComponent(raw); } catch (e) {}
+  if (!/^zotero:\/\/(open-pdf|select)\/[A-Za-z0-9_\-\/?=&.]+$/.test(raw)) return;
+  var a = document.getElementById('go');
+  a.href = raw;
+  a.hidden = false;
+  document.getElementById('msg').textContent = 'Zotero wird geöffnet. Falls nichts passiert, auf den Knopf klicken.';
+  location.replace(raw);
+})();
+</script>
+</body>
+</html>
